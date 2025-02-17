@@ -6,7 +6,7 @@ from caesar_cipher import caesar_ciphering, caesar_deciphering
 
 # Saisie du pseudo de l'utilisateur
 nickname = input("Choisissez un pseudo: ")
-KEY = randint(1, 25)
+KEY_CAESAR = randint(1, 25)
 
 # Adresse et port du serveur (doivent correspondre à ceux du serveur)
 HOST = '127.0.0.1'
@@ -46,9 +46,9 @@ def write():
     while True:
         message = input('')
         full_message = f"{nickname}: {message}"
-        client.send(str(KEY).encode('utf-8'))
+        client.send(str(KEY_CAESAR).encode('utf-8'))
         sleep(0.1)
-        client.send((caesar_ciphering(full_message, KEY)).encode('utf-8'))
+        client.send((caesar_ciphering(full_message, KEY_CAESAR)).encode('utf-8'))
 
 # Démarrage des threads pour la réception et l'envoi des messages
 receive_thread = threading.Thread(target=receive)
