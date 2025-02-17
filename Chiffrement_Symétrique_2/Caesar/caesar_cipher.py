@@ -1,5 +1,4 @@
-def caesar_cyphering(text):
-    shift = 8 # Clé de chiffrement 
+def caesar_ciphering(text, shift):
     result = ""
     for i in range(len(text)):
         char = text[i]
@@ -11,8 +10,7 @@ def caesar_cyphering(text):
             result += char
     return result
 
-def caesar_decyphering(text):
-    shift = 8 # Clé de déchiffrement
+def caesar_deciphering(text, shift):
     result = ""
     for i in range(len(text)):
         char = text[i]
@@ -24,8 +22,3 @@ def caesar_decyphering(text):
             result += char
     return result
 
-
-"""test = "Hello, World!"
-print(f"Texte clair: {test}")
-print(f"Texte chiffré: {caesar_cyphering(test)}")
-print(f"Texte déchiffré: {caesar_decyphering(caesar_cyphering(test))}")"""
