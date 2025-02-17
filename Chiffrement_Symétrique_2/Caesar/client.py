@@ -1,5 +1,6 @@
 import socket
 import threading
+from caesar_cypher import caesar_cyphering, caesar_decyphering
 
 # Saisie du pseudo de l'utilisateur
 nickname = input("Choisissez un pseudo: ")
@@ -20,7 +21,7 @@ def receive():
         try:
             message = client.recv(1024)
             if message:
-                print(message.decode('utf-8'))
+                print(caesar_decyphering(message.decode('utf-8')))
             else:
                 # La connexion a été fermée
                 break
@@ -36,7 +37,7 @@ def write():
     while True:
         message = input('')
         full_message = f"{nickname}: {message}"
-        client.send(full_message.encode('utf-8'))
+        client.send((caesar_cyphering(full_message).encode('utf-8')))
 
 # Démarrage des threads pour la réception et l'envoi des messages
 receive_thread = threading.Thread(target=receive)
