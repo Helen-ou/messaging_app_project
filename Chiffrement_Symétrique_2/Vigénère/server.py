@@ -10,11 +10,11 @@ server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server.bind((HOST, PORT))
 server.listen()
 
-clients = []  # liste des clients connectés
+clients = []  # Liste des clients connectés
 
 def broadcast(message, client_sender):
     """
-    Envoie un message à tous les clients sauf l'émetteur.
+    Diffuse un message chiffré à tous les clients sauf l'expéditeur.
     """
     for client in clients:
         if client != client_sender:
@@ -26,14 +26,13 @@ def broadcast(message, client_sender):
 
 def handle_client(client):
     """
-    Gère la réception des messages d'un client.
+    Gère la réception et la diffusion des messages d'un client.
     """
     while True:
         try:
-            # Réception d'un message (en clair)
             message = client.recv(1024)
             if message:
-                print(f"Message reçu: {message.decode('utf-8')}")
+                print(f"Message reçu (chiffré): {message.decode('utf-8')}")
                 broadcast(message, client)
             else:
                 remove_client(client)
