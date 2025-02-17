@@ -6,8 +6,8 @@ Nous nous sommes placés comme attaquant dans toutes les différentes possibilit
 
 Une fois les documents récupéré, un utilisateur malveillant peut se servir notamment de Cyberchef afin de décrypter le message (screenshots également à l'appui) :
 
-CAESAR : ![](Caesar_Wireshark.png) ![](Caesar_CyberChef.png)
-VIGENERE :  ![](Vigenere_Wireshark.png) ![](Vigenere_CyberChef.png)
+CAESAR (non sécurisé) : ![](Caesar_Wireshark.png) ![](Caesar_CyberChef.png)
+VIGENERE (non sécurisé) :  ![](Vigenere_Wireshark.png) ![](Vigenere_CyberChef.png)
 AES : ![](AES_Wireshark.png) 
 RSA : ![](RSA_Wireshark.png) 
 
