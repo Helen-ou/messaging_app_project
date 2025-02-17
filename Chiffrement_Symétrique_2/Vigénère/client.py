@@ -1,30 +1,7 @@
 import socket
 import threading
-
-# Fonction de chiffrement et déchiffrement Vigenère
-def vigenere_cipher(text, key, encrypt=True):
-    key = key.upper()
-    result = []
-    key_index = 0
-    key_length = len(key)
-
-    for char in text:
-        if char.isalpha():  # Vérifie si c'est une lettre
-            shift = ord(key[key_index % key_length]) - ord('A')
-            if not encrypt:
-                shift = -shift
-            
-            # Gestion majuscules et minuscules indépendamment
-            base = ord('A') if char.isupper() else ord('a')
-            new_char = chr(((ord(char) - base + shift) % 26) + base)
-            
-            result.append(new_char)
-            key_index += 1  # La clé avance seulement sur les lettres
-        else:
-            result.append(char)  # Les caractères spéciaux ne changent pas
-
-    return ''.join(result)
-
+from vigenere_cipher import vigenere_cipher  # Import the encryption function
+import unicodedata
 # Clé unique pour chiffrer et déchiffrer
 SECRET_KEY = "HIHIHAHA"
 
@@ -38,6 +15,11 @@ PORT = 12345
 # Création du socket client et connexion au serveur
 client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 client.connect((HOST, PORT))
+
+
+def normalize_text(text):
+    """ Normalise les caractères en supprimant les accents. """
+    return ''.join(c for c in unicodedata.normalize('NFKD', text) if unicodedata.category(c) != 'Mn')
 
 def receive():
     """
@@ -68,8 +50,8 @@ def write():
     """
     while True:
         message = input('')
-        encrypted_nickname = vigenere_cipher(nickname, SECRET_KEY)  # Chiffre le pseudo
-        encrypted_message = vigenere_cipher(message, SECRET_KEY)    # Chiffre le message
+        encrypted_nickname = vigenere_cipher(nickname, SECRET_KEY) 
+        encrypted_message = vigenere_cipher(message, SECRET_KEY)    
         full_message = f"{encrypted_nickname}: {encrypted_message}"
         client.send(full_message.encode('utf-8'))
 
