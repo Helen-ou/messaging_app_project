@@ -1,5 +1,6 @@
 import socket
 import threading
+from time import sleep
 from random import randint
 from caesar_cipher import caesar_ciphering, caesar_deciphering
 
@@ -19,12 +20,17 @@ def receive():
     """
     Réception des messages envoyés par le serveur.
     """
+    compteur_key = 0
     while True:
         try:
             message = client.recv(1024)
             if message:
-                decoded_key = int(message.decode('utf-8')[:2])
-                print(caesar_deciphering(message.decode('utf-8')[2:], decoded_key))
+                if not compteur_key:
+                    decoded_key = int(message.decode('utf-8'))
+                    compteur_key += 1
+                else:
+                    print(caesar_deciphering(message.decode('utf-8'), decoded_key))
+                    compteur_key = 0
             else:
                 # La connexion a été fermée
                 break
@@ -39,7 +45,9 @@ def write():
     """
     while True:
         message = input('')
-        full_message = f"{KEY} {nickname}: {message}"
+        full_message = f"{nickname}: {message}"
+        client.send(str(KEY).encode('utf-8'))
+        sleep(0.1)
         client.send((caesar_ciphering(full_message, KEY)).encode('utf-8'))
 
 # Démarrage des threads pour la réception et l'envoi des messages
