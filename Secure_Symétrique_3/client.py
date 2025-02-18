@@ -1,5 +1,6 @@
 import socket
 import threading
+import tkinter as tk
 from vigenere_cipher import vigenere_cipher
 from caesar_cipher import caesar_ciphering, caesar_deciphering
 import unicodedata
@@ -23,7 +24,7 @@ client.connect((HOST, PORT))
 def normalize_text(text):
     return ''.join(c for c in unicodedata.normalize('NFKD', text) if unicodedata.category(c) != 'Mn')
 
-def receive():
+def receive(callback=None):
     while True:
         try:
             message = client.recv(1024).decode('utf-8')
@@ -36,7 +37,10 @@ def receive():
                     decrypted_nickname = vigenere_cipher(caesar_decrypted_nickname, received_key_vig, encrypt=False)
                     caesar_decrypted_message = caesar_deciphering(encrypted_message.strip(), received_key_caesar)
                     decrypted_message = vigenere_cipher(caesar_decrypted_message, received_key_vig, encrypt=False)
-                    print(f"{decrypted_nickname} : {decrypted_message}")
+                    if callback:
+                        callback(f"{decrypted_nickname} : {decrypted_message}")
+                    else:
+                        print(f"{decrypted_nickname} : {decrypted_message}")
                 else:
                     print(message)
             else:
@@ -46,16 +50,22 @@ def receive():
             client.close()
             break
 
-def write():
-    while True:
-        message = input('')
+def write(message=None):
+    if message:
         encrypted_nickname = caesar_ciphering(vigenere_cipher(nickname, SECRET_KEY_VIGENERE), SECRET_KEY_CAESAR)
         encrypted_message = caesar_ciphering(vigenere_cipher(message, SECRET_KEY_VIGENERE), SECRET_KEY_CAESAR)
         full_message = f"{encrypted_nickname}:{encrypted_message}:{encrypt(SECRET_KEY_VIGENERE)}:{encrypt(SECRET_KEY_CAESAR)}"
         client.send(full_message.encode('utf-8'))
+    else:
+        while True:
+            message = input('')
+            encrypted_nickname = caesar_ciphering(vigenere_cipher(nickname, SECRET_KEY_VIGENERE), SECRET_KEY_CAESAR)
+            encrypted_message = caesar_ciphering(vigenere_cipher(message, SECRET_KEY_VIGENERE), SECRET_KEY_CAESAR)
+            full_message = f"{encrypted_nickname}:{encrypted_message}:{encrypt(SECRET_KEY_VIGENERE)}:{encrypt(SECRET_KEY_CAESAR)}"
+            client.send(full_message.encode('utf-8'))
 
-receive_thread = threading.Thread(target=receive)
-receive_thread.start()
-
-write_thread = threading.Thread(target=write)
-write_thread.start()
+if __name__ == "__main__":
+    from gui import ChatClient
+    root = tk.Tk()
+    chat_client = ChatClient(root, receive, write, nickname)
+    root.mainloop()
