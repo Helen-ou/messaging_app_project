@@ -1,5 +1,6 @@
 import socket
 import threading
+import tkinter as tk
 
 # Saisie du pseudo de l'utilisateur
 nickname = input("Choisissez un pseudo: ")
@@ -12,7 +13,7 @@ PORT = 12345
 client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 client.connect((HOST, PORT))
 
-def receive():
+def receive(callback=None):
     """
     Réception des messages envoyés par le serveur.
     """
@@ -20,7 +21,11 @@ def receive():
         try:
             message = client.recv(1024)
             if message:
-                print(message.decode('utf-8'))
+                decoded_message = message.decode('utf-8')
+                if callback:
+                    callback(decoded_message)
+                else:
+                    print(decoded_message)
             else:
                 # La connexion a été fermée
                 break
@@ -29,18 +34,21 @@ def receive():
             client.close()
             break
 
-def write():
+def write(message=None):
     """
     Envoie les messages saisis par l'utilisateur au serveur.
     """
-    while True:
-        message = input('')
+    if message:
         full_message = f"{nickname}: {message}"
         client.send(full_message.encode('utf-8'))
+    else:
+        while True:
+            message = input('')
+            full_message = f"{nickname}: {message}"
+            client.send(full_message.encode('utf-8'))
 
-# Démarrage des threads pour la réception et l'envoi des messages
-receive_thread = threading.Thread(target=receive)
-receive_thread.start()
-
-write_thread = threading.Thread(target=write)
-write_thread.start()
+if __name__ == "__main__":
+    from gui import ChatClient
+    root = tk.Tk()
+    chat_client = ChatClient(root, receive, write, nickname)
+    root.mainloop()

@@ -1,5 +1,6 @@
 import socket
 import threading
+import tkinter as tk
 from time import sleep
 from random import randint
 from caesar_cipher import caesar_ciphering, caesar_deciphering
@@ -16,7 +17,7 @@ PORT = 12345
 client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 client.connect((HOST, PORT))
 
-def receive():
+def receive(callback=None):
     """
     Réception des messages envoyés par le serveur.
     """
@@ -28,6 +29,9 @@ def receive():
                 if not compteur_key:
                     decoded_key = int(message.decode('utf-8'))
                     compteur_key += 1
+                elif callback:
+                    callback(caesar_deciphering(message.decode('utf-8'), decoded_key))
+                    compteur_key = 0
                 else:
                     print(caesar_deciphering(message.decode('utf-8'), decoded_key))
                     compteur_key = 0
@@ -39,22 +43,26 @@ def receive():
             client.close()
             break
 
-def write():
+def write(message=None):
     """
     Envoie les messages saisis par l'utilisateur au serveur.
     """
-    while True:
-        message = input('')
+    if message:
         full_message = f"{nickname}: {message}"
         client.send(str(KEY_CAESAR).encode('utf-8'))
         sleep(0.1)
         client.send((caesar_ciphering(full_message, KEY_CAESAR)).encode('utf-8'))
+    else:
+        while True:
+            message = input('')
+            full_message = f"{nickname}: {message}"
+            client.send(str(KEY_CAESAR).encode('utf-8'))
+            sleep(0.1)
+            client.send((caesar_ciphering(full_message, KEY_CAESAR)).encode('utf-8'))
 
-# Démarrage des threads pour la réception et l'envoi des messages
-receive_thread = threading.Thread(target=receive)
-receive_thread.start()
-
-write_thread = threading.Thread(target=write)
-write_thread.start()
-
+if __name__ == "__main__":
+    from gui import ChatClient
+    root = tk.Tk()
+    chat_client = ChatClient(root, receive, write, nickname)
+    root.mainloop()
 
