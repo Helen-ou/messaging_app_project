@@ -30,10 +30,12 @@ def receive():
             if message:
                 if ":" in message:
                     encrypted_nickname, encrypted_message, received_key_vig, received_key_caesar = message.split(":", 3)
-                    caesar_decrypted_nickname = caesar_deciphering(encrypted_nickname.strip(), decrypt(int(received_key_caesar.strip())))
-                    decrypted_nickname = vigenere_cipher(caesar_decrypted_nickname, decrypt(received_key_vig.strip()), encrypt=False)
-                    caesar_decrypted_message = caesar_deciphering(encrypted_message.strip(), encrypt(int(received_key_caesar.strip())))
-                    decrypted_message = vigenere_cipher(caesar_decrypted_message, decrypt(received_key_vig.strip()), encrypt=False)
+                    received_key_vig = decrypt(received_key_vig)
+                    received_key_caesar = decrypt(int(received_key_caesar))
+                    caesar_decrypted_nickname = caesar_deciphering(encrypted_nickname.strip(), (received_key_caesar))
+                    decrypted_nickname = vigenere_cipher(caesar_decrypted_nickname, received_key_vig, encrypt=False)
+                    caesar_decrypted_message = caesar_deciphering(encrypted_message.strip(), received_key_caesar)
+                    decrypted_message = vigenere_cipher(caesar_decrypted_message, received_key_vig, encrypt=False)
                     print(f"{decrypted_nickname} : {decrypted_message}")
                 else:
                     print(message)
