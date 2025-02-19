@@ -16,6 +16,7 @@ server.listen()
 
 clients = {}  
 
+# génére une paire de clés RSA pour le serveur et le client
 server_private_key = rsa.generate_private_key(
     public_exponent=65537,
     key_size=2048
@@ -26,6 +27,8 @@ server_public_pem = server_public_key.public_bytes(
     format=serialization.PublicFormat.SubjectPublicKeyInfo
 )
 
+# petite section de code pour afficher la clé publique du serveur
+# à supprimer si plus besoin de gérer ça dans le futur
 server_private_pem = server_private_key.private_bytes(
     encoding=serialization.Encoding.PEM,
     format=serialization.PrivateFormat.TraditionalOpenSSL,
@@ -34,6 +37,7 @@ server_private_pem = server_private_key.private_bytes(
 
 print("Clé privée du serveur (PEM) :\n", server_private_pem.decode())
 
+# récupération des utilisateurs enregistrés
 def load_users():
     if not os.path.exists(USER_FILE):
         return {}
@@ -117,7 +121,7 @@ def handle_client(client):
             ).decode('utf-8')
 
             print(f"Message reçu: {message}")
-            broadcast(message, username)  # Diffuser aux autres clients
+            broadcast(message, username) 
 
     except Exception as e:
         print(f"Erreur: {e}")
