@@ -4,10 +4,8 @@ from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 from cryptography.hazmat.backends import default_backend
 import os
 
-# Clé secrète pour AES (doit être de 16, 24 ou 32 octets)
 # Pour des raisons de simplicité, nous utilisons une clé fixe ici.
-# Dans un environnement réel, utilisez une méthode sécurisée pour partager cette clé.
-SECRET_KEY = b'a' * 32  # Remplacez par une clé sécurisée
+SECRET_KEY = "Secure_Key"
 
 nickname = input("Choisissez un pseudo: ")
 
