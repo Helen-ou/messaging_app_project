@@ -16,14 +16,14 @@ client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 client.connect((HOST, PORT))
 
 def encrypt_message(message, key):
-    iv = os.urandom(16)  # Générer un IV unique pour chaque message
+    iv = os.urandom(16)
     cipher = Cipher(algorithms.AES(key), modes.CFB(iv), backend=default_backend())
     encryptor = cipher.encryptor()
     encrypted_message = encryptor.update(message.encode()) + encryptor.finalize()
-    return iv + encrypted_message  # Envoyer le IV avec le message chiffré
+    return iv + encrypted_message  
 
 def decrypt_message(encrypted_message, key):
-    iv = encrypted_message[:16]  # Extraire le IV du message reçu
+    iv = encrypted_message[:16]
     cipher_message = encrypted_message[16:]
     cipher = Cipher(algorithms.AES(key), modes.CFB(iv), backend=default_backend())
     decryptor = cipher.decryptor()

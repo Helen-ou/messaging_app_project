@@ -2,12 +2,15 @@ input_hex = "1b37373331363f78151b7f2b783431333d78397828372d363c78373e783a393b373
 alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
 def print_xored_input_from_alphabet(input_hex, alphabet):
+    xor_array = []
     for letter in alphabet:
         xored_input = ""
         for i in range(0, len(input_hex), 2):
             xored_input += chr(int(input_hex[i:i+2], 16) ^ ord(letter))
-        print(xored_input)
+        if xored_input.count(" ") > 0:
+            xored_input = xor_array.append(xored_input)
+    return xor_array
 
-print_xored_input_from_alphabet(input_hex, alphabet)
+print(print_xored_input_from_alphabet(input_hex, alphabet))
 
-# cOOKINGmcSLIKEAPOUNDOFBACON
+# Cooking MC's like a pound of bacon
