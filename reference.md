@@ -16,4 +16,14 @@ https://en.wikipedia.org/wiki/Substitution_cipher
 //Bettercap
 https://www.bettercap.org/
 
+***RSA_IAM7***
+**Création d'utilisateurs**
+https://www.youtube.com/watch?v=kJtVObyrisM
+https://www.docstring.fr/glossaire/json/
+
+**RSA**
+https://gist.github.com/gabrielfalcao/de82a468e62e73805c59af620904c124
+https://www.youtube.com/watch?v=58LLuy1B8dk
+
+
 
