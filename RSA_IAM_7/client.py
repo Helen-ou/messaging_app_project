@@ -58,6 +58,7 @@ def receive():
                     )
                 ).decode('utf-8')
                 print(message)
+                print(f"Message chiffré reçu (base64) : {encrypted_message.hex()}")
             else:
                 break
         except Exception as e:

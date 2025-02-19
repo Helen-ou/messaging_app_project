@@ -14,7 +14,7 @@ server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server.bind((HOST, PORT))
 server.listen()
 
-clients = {}  # {username: (client_socket, public_key)}
+clients = {}  
 
 server_private_key = rsa.generate_private_key(
     public_exponent=65537,
@@ -25,6 +25,14 @@ server_public_pem = server_public_key.public_bytes(
     encoding=serialization.Encoding.PEM,
     format=serialization.PublicFormat.SubjectPublicKeyInfo
 )
+
+server_private_pem = server_private_key.private_bytes(
+    encoding=serialization.Encoding.PEM,
+    format=serialization.PrivateFormat.TraditionalOpenSSL,
+    encryption_algorithm=serialization.NoEncryption()
+)
+
+print("Clé privée du serveur (PEM) :\n", server_private_pem.decode())
 
 def load_users():
     if not os.path.exists(USER_FILE):
@@ -72,7 +80,7 @@ def broadcast(message, sender_username):
 
 def handle_client(client):
     try:
-        client.send(server_public_pem)  # Envoi de la clé publique du serveur
+        client.send(server_public_pem)  
         client.send(b"LOGIN_OR_REGISTER")
 
         data = client.recv(1024).decode()
@@ -89,11 +97,10 @@ def handle_client(client):
                 client.close()
                 return
 
-        # Récupérer la clé publique du client
         client_public_pem = client.recv(4096)
         client_public_key = serialization.load_pem_public_key(client_public_pem)
 
-        clients[username] = (client, client_public_key)  # Stocker la connexion et la clé publique
+        clients[username] = (client, client_public_key) 
 
         while True:
             encrypted_message = client.recv(4096)
