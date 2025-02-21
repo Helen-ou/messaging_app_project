@@ -1,5 +1,9 @@
+import time 
+
 input_hex = "1b37373331363f78151b7f2b783431333d78397828372d363c78373e783a393b3736"
-alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+
+start_time = time.time()
 
 def print_xored_input_from_alphabet(input_hex, alphabet):
     xor_array = []
@@ -13,4 +17,5 @@ def print_xored_input_from_alphabet(input_hex, alphabet):
 
 print(print_xored_input_from_alphabet(input_hex, alphabet))
 
+print("--- %s seconds ---" % (time.time() - start_time))
 # Cooking MC's like a pound of bacon
