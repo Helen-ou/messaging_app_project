@@ -6,7 +6,7 @@ start_time = time.time()
 
 with open(os.path.join(os.path.dirname(__file__), 'dat_4.txt')) as r:
     input_hex = r.read().splitlines()
-alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ123456789"
 
 
 def print_xored_input_from_alphabet(input_hex, alphabet):
