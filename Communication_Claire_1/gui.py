@@ -10,15 +10,14 @@ class ChatClient:
         self.write_func = write_func
         self.nickname = nickname
 
-        # Change the background color of the root window
-        self.root.configure(bg='#f0e4ff')#cbffc8f5fef4
+        self.root.configure(bg='#f0e4ff')
 
         self.chat_area = scrolledtext.ScrolledText(self.root, wrap=tk.WORD, bg='#f9f4ff', highlightbackground='#d4b3ff', highlightthickness=2)
         self.chat_area.pack(padx=20, pady=5)
         self.chat_area.config(state=tk.DISABLED)
 
         self.chat_area.tag_config('self', foreground='#bf94f8')
-        self.chat_area.tag_config('received', foreground='#8f3ff9')  # Tag for received messages
+        self.chat_area.tag_config('received', foreground='#8f3ff9')  
 
         self.message_entry = tk.Entry(self.root, width=50, bg='#f9f4ff', highlightbackground='#d4b3ff', highlightthickness=2)
         self.message_entry.pack(padx=20, pady=5)
@@ -37,7 +36,7 @@ class ChatClient:
     def display_message(self, message, tag=None):
         self.chat_area.config(state=tk.NORMAL)
         if tag is None:
-            tag = 'received'  # Default tag for received messages
+            tag = 'received'  
         self.chat_area.insert(tk.END, message + '\n', tag)
         self.chat_area.config(state=tk.DISABLED)
         self.chat_area.yview(tk.END)

@@ -29,7 +29,6 @@ if response in ["LOGIN_FAIL", "REGISTER_FAIL"]:
 else:
     print("Connexion réussie !")
 
-# Générer une clé publique/privée pour le client
 client_private_key = rsa.generate_private_key(
     public_exponent=65537,
     key_size=2048
@@ -40,11 +39,9 @@ client_public_pem = client_public_key.public_bytes(
     format=serialization.PublicFormat.SubjectPublicKeyInfo
 )
 
-# Envoyer la clé publique du client au serveur
 client.send(client_public_pem)
 
 def receive():
-    """ Réception et affichage des messages. """
     while True:
         try:
             encrypted_message = client.recv(4096)
@@ -67,7 +64,6 @@ def receive():
             break
 
 def send_message():
-    """ Envoie un message chiffré au serveur. """
     while True:
         message = input()
         encrypted_message = server_public_key.encrypt(

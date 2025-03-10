@@ -1,6 +1,5 @@
 from cryptography.fernet import Fernet
 def encrypt(inputed):
-    """La clé va être la même pour tous les clients"""
     key_str = "qwertyuiopasdfghjklzxcvbnm"
     key_int = "S3cr3t-K3y"
     if type(inputed) == str:
