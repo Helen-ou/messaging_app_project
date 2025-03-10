@@ -12,7 +12,7 @@ def print_xored_input_from_alphabet(input_hex, alphabet):
         for i in range(0, len(input_hex), 2):
             xored_input += chr(int(input_hex[i:i+2], 16) ^ ord(letter))
         if xored_input.count(" ") > 0:
-            xored_input = xor_array.append(xored_input)
+            xored_input = xor_array.append([xored_input, letter])
     return xor_array
 
 print(print_xored_input_from_alphabet(input_hex, alphabet))
