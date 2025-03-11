@@ -4,8 +4,7 @@ from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 from cryptography.hazmat.backends import default_backend
 import os
 
-# Pour des raisons de simplicité, nous utilisons une clé fixe ici.
-SECRET_KEY = "Secure_Key"
+SECRET_KEY = "Clé"
 
 nickname = input("Choisissez un pseudo: ")
 
