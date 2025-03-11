@@ -3,7 +3,7 @@ import threading
 import tkinter as tk
 from cryptography.hazmat.primitives.asymmetric import rsa, padding
 from cryptography.hazmat.primitives import serialization, hashes
-print('blabla')
+
 HOST = '127.0.0.1'
 PORT = 12345
 
@@ -55,8 +55,10 @@ def receive(callback=None):
                         label=None
                     )
                 ).decode('utf-8')
-                print(message)
-                #print(f"Message chiffré reçu (base64) : {encrypted_message.hex()}")
+
+                if callback:
+                    callback(message)  # <<< Met à jour l'interface graphique
+
             else:
                 break
         except Exception as e:
@@ -64,9 +66,8 @@ def receive(callback=None):
             client.close()
             break
 
-def send_message(message=None):
-    while True:
-        message = input()
+def send_message(message):
+    if message:  # Vérifie que le message n'est pas vide
         encrypted_message = server_public_key.encrypt(
             f"{nickname}: {message}".encode('utf-8'),
             padding.OAEP(
