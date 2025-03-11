@@ -10,7 +10,6 @@ from key_securing import encrypt, decrypt
 SECRET_KEY_VIGENERE = ""
 for i in range(10):
     SECRET_KEY_VIGENERE += chr(randint(65, 90))
-print(SECRET_KEY_VIGENERE)
 SECRET_KEY_CAESAR = randint(1, 25)
 
 nickname = input("Choisissez un pseudo: ")

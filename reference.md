@@ -24,6 +24,3 @@ https://www.docstring.fr/glossaire/json/
 **RSA**
 https://gist.github.com/gabrielfalcao/de82a468e62e73805c59af620904c124
 https://www.youtube.com/watch?v=58LLuy1B8dk
-
-
-
