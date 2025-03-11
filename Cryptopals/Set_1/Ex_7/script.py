@@ -1,11 +1,11 @@
 from Crypto.Cipher import AES
 import base64
+import os 
 
 key = b'YELLOW SUBMARINE'
 
-file_path = r"C:\Users\Dominique Husson\Downloads\encoded.txt"
-with open(file_path, "r") as f:
-    encoded_data = f.read()
+with open(os.path.join(os.path.dirname(__file__), 'encoded.txt')) as r:
+    encoded_data = r.read()
 
 ciphertext = base64.b64decode(encoded_data)
 

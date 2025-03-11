@@ -1,10 +1,9 @@
 import os 
 import time
-from textstat import automated_readability_index
 
 start_time = time.time()
 
-with open(os.path.join(os.path.dirname(__file__), 'dat_4.txt')) as r:
+with open(os.path.join(os.path.dirname(__file__), 'Cryptopals/Set_1/dat_4.txt')) as r:
     input_hex = r.read().splitlines()
 alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ123456789"
 
