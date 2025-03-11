@@ -10,17 +10,20 @@ class ChatClient:
         self.write_func = write_func
         self.nickname = nickname
 
-        self.chat_area = scrolledtext.ScrolledText(self.root, wrap=tk.WORD)
+        self.root.configure(bg='#f0e4ff')
+
+        self.chat_area = scrolledtext.ScrolledText(self.root, wrap=tk.WORD, bg='#f9f4ff', highlightbackground='#d4b3ff', highlightthickness=2)
         self.chat_area.pack(padx=20, pady=5)
         self.chat_area.config(state=tk.DISABLED)
 
-        self.chat_area.tag_config('self', foreground='blue')
+        self.chat_area.tag_config('self', foreground='#bf94f8')
+        self.chat_area.tag_config('received', foreground='#8f3ff9')  
 
-        self.message_entry = tk.Entry(self.root, width=50)
+        self.message_entry = tk.Entry(self.root, width=50, bg='#f9f4ff', highlightbackground='#d4b3ff', highlightthickness=2)
         self.message_entry.pack(padx=20, pady=5)
         self.message_entry.bind("<Return>", self.send_message)
 
-        self.send_button = tk.Button(self.root, text="Send", command=self.send_message)
+        self.send_button = tk.Button(self.root, text="Send", command=self.send_message, bg='#d2b6f7', highlightbackground='#d4b3ff', highlightthickness=2)
         self.send_button.pack(padx=20, pady=5)
 
         self.receive_thread = threading.Thread(target=self.receive)
@@ -32,6 +35,8 @@ class ChatClient:
 
     def display_message(self, message, tag=None):
         self.chat_area.config(state=tk.NORMAL)
+        if tag is None:
+            tag = 'received'  
         self.chat_area.insert(tk.END, message + '\n', tag)
         self.chat_area.config(state=tk.DISABLED)
         self.chat_area.yview(tk.END)

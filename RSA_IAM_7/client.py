@@ -1,8 +1,9 @@
 import socket
 import threading
+import tkinter as tk
 from cryptography.hazmat.primitives.asymmetric import rsa, padding
 from cryptography.hazmat.primitives import serialization, hashes
-
+print('blabla')
 HOST = '127.0.0.1'
 PORT = 12345
 
@@ -41,7 +42,7 @@ client_public_pem = client_public_key.public_bytes(
 
 client.send(client_public_pem)
 
-def receive():
+def receive(callback=None):
     while True:
         try:
             encrypted_message = client.recv(4096)
@@ -55,7 +56,7 @@ def receive():
                     )
                 ).decode('utf-8')
                 print(message)
-                print(f"Message chiffré reçu (base64) : {encrypted_message.hex()}")
+                #print(f"Message chiffré reçu (base64) : {encrypted_message.hex()}")
             else:
                 break
         except Exception as e:
@@ -63,7 +64,7 @@ def receive():
             client.close()
             break
 
-def send_message():
+def send_message(message=None):
     while True:
         message = input()
         encrypted_message = server_public_key.encrypt(
@@ -77,7 +78,7 @@ def send_message():
         client.send(encrypted_message)
 
 if __name__ == "__main__":
-    receive_thread = threading.Thread(target=receive, daemon=True)
-    receive_thread.start()
-    
-    send_message()
+    from gui import ChatClient
+    root = tk.Tk()
+    chat_client = ChatClient(root, receive, send_message, nickname)
+    root.mainloop()
