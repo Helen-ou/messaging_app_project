@@ -1,10 +1,11 @@
 import socket
 import threading
+import tkinter as tk
 from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 from cryptography.hazmat.backends import default_backend
 import os
 
-SECRET_KEY = "Clé"
+SECRET_KEY = b"Cle1234567890123"
 
 nickname = input("Choisissez un pseudo: ")
 
@@ -29,13 +30,16 @@ def decrypt_message(encrypted_message, key):
     decrypted_message = decryptor.update(cipher_message) + decryptor.finalize()
     return decrypted_message.decode(errors='ignore')
 
-def receive():
+def receive(callback=None):
     while True:
         try:
             encrypted_message = client.recv(1024)
             if encrypted_message:
                 decrypted_message = decrypt_message(encrypted_message, SECRET_KEY)
-                print(decrypted_message)
+                if callback:
+                    callback(decrypted_message)
+                else:
+                    print(decrypted_message)
             else:
                 break
         except Exception as e:
@@ -43,14 +47,12 @@ def receive():
             client.close()
             break
 
-def write():
-    while True:
-        message = input('')
-        encrypted_message = encrypt_message(f"{nickname}: {message}", SECRET_KEY)
-        client.send(encrypted_message)
+def write(message):
+    encrypted_message = encrypt_message(f"{nickname}: {message}", SECRET_KEY)
+    client.send(encrypted_message)
 
-receive_thread = threading.Thread(target=receive)
-receive_thread.start()
-
-write_thread = threading.Thread(target=write)
-write_thread.start()
+if __name__ == "__main__":
+    from gui import ChatClient
+    root = tk.Tk()
+    chat_client = ChatClient(root, receive, write, nickname)
+    root.mainloop()
